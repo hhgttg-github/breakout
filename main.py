@@ -9,7 +9,7 @@ import sprite as sp
 
 class Game:
     def __init__(self):
-        pyxel.init(256,256),fps=60)
+        pyxel.init(256,256,fps=60)
         pyxel.load("breakout.pyxres")
 
         pyxel.run(self.update,self.draw)

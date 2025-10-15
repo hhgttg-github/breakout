@@ -4,17 +4,18 @@ import sprite as sp
 ####====================================
 #### CONSTANT
 
-SP_BRICK = 34
+PADDLE_SP = 32
+PADDLE_WIDTH = 16
+PADDLE_HEIGHT = 8
 
 ####====================================
 #### CLASS
 
-class Ball():
+class Paddle():
     def __init__(self):
-        pass
-
+        self.sp = sp.Sprite(0,128,64,64,1,0,sp.sp8Group)
     def __update__(self):
-        pass
+        self.sp.update()
 
     def __draw__(self):
-        pass
+        self.sp.draw()

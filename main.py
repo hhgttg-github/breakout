@@ -1,25 +1,31 @@
 import pyxel
 import sprite as sp
+import ball
 
 ####====================================
 #### CONSTANT
+
+SCREEN_HEIGHT = 256
+SCREEN_WIDTH = 256
 
 ####====================================
 #### CLASS
 
 class Game:
     def __init__(self):
-        pyxel.init(256,256,fps=60)
+        pyxel.init(SCREEN_WIDTH,SCREEN_HEIGHT,fps=60)
         pyxel.load("breakout.pyxres")
+        self.ball = ball.Ball()
 
         pyxel.run(self.update,self.draw)
 
     def update(self):
-        pass
+        self.ball.update()
 
     def draw(self):
         pyxel.cls(0)
-        pyxel.bltm(0,0,0,0,0,128,128)
+        self.ball.draw()
+        pyxel.flip()
         
 if __name__=="__main__":
     Game()

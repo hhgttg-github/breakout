@@ -17,6 +17,12 @@ class Paddle():
         self.sp = sprite.Sprite(120,240,32,0,sprite.sp8Group,area=(2,1))
 
     def update(self):
+        if pyxel.btn(pyxel.KEY_A):
+            self.sp.dx = -512
+        elif pyxel.btn(pyxel.KEY_D):
+            self.sp.dx = 512
+        elif (pyxel.btnr(pyxel.KEY_A)) or (pyxel.btnr(pyxel.KEY_D)):
+            self.sp.dx = 0
         self.sp.update()
 
     def draw(self):

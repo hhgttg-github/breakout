@@ -23,9 +23,6 @@ class Game:
     def update(self):
         self.ball.update()
         self.paddle.update()
-        print(f"x={self.ball.sp.x}")
-        print(f"tx={self.ball.sp.tx}")
-        print(f"dx={self.ball.sp.dx}")
 
     def draw(self):
         pyxel.cls(0)

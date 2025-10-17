@@ -1,1 +1,1 @@
-/home/kawabe/python/pyxel/sprite/sprite.py
+/home/kawabe/MEGA/python/pyxel/sprite/sprite.py

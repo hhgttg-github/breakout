@@ -1,6 +1,7 @@
 import pyxel
 import sprite as sp
 import ball
+import paddle
 
 ####====================================
 #### CONSTANT
@@ -16,11 +17,12 @@ class Game:
         pyxel.init(SCREEN_WIDTH,SCREEN_HEIGHT,fps=60)
         pyxel.load("breakout.pyxres")
         self.ball = ball.Ball()
-        self.ball.sp.dx = 32
+        self.paddle = paddle.Paddle()
         pyxel.run(self.update,self.draw)
 
     def update(self):
         self.ball.update()
+        self.paddle.update()
         print(f"x={self.ball.sp.x}")
         print(f"tx={self.ball.sp.tx}")
         print(f"dx={self.ball.sp.dx}")
@@ -28,6 +30,7 @@ class Game:
     def draw(self):
         pyxel.cls(0)
         self.ball.draw()
+        self.paddle.draw()
         pyxel.flip()
         
 if __name__=="__main__":

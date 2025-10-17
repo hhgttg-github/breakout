@@ -1,5 +1,5 @@
 import pyxel
-import sprite as sp
+import sprite
 
 ####====================================
 #### CONSTANT
@@ -12,10 +12,12 @@ PADDLE_HEIGHT = 8
 #### CLASS
 
 class Paddle():
+
     def __init__(self):
-        self.sp = sp.Sprite(0,128,64,64,1,0,sp.sp8Group)
-    def __update__(self):
+        self.sp = sprite.Sprite(120,240,32,0,sprite.sp8Group,area=(2,1))
+
+    def update(self):
         self.sp.update()
 
-    def __draw__(self):
+    def draw(self):
         self.sp.draw()

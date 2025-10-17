@@ -13,7 +13,9 @@ BALL_SIZE = 8
 class Ball():
     def __init__(self):
         self.sp = sprite.Sprite(0,128,1,0,sprite.sp8Group)
-
+        self.sp.dx = 128
+        self.sp.dy = 64
+        
     def update(self):
         self.sp.update()
 

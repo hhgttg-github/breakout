@@ -21,6 +21,8 @@ class Game:
         pyxel.run(self.update,self.draw)
 
     def update(self):
+        if sp.collision(self.ball.sp,self.paddle.sp):
+            self.ball.sp.dy = (-1)*self.ball.sp.dy
         self.ball.update()
         self.paddle.update()
 

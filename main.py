@@ -1,5 +1,6 @@
 import pyxel
 import sprite as sp
+import screen
 import ball
 import paddle
 
@@ -15,6 +16,7 @@ class Game:
         pyxel.load("breakout.pyxres")
         self.ball = ball.Ball()
         self.paddle = paddle.Paddle()
+        self.score = 0
         pyxel.run(self.update,self.draw)
 
     def update(self):
@@ -28,6 +30,7 @@ class Game:
         pyxel.cls(0)
         self.ball.draw()
         self.paddle.draw()
+        screen.draw_score(self.score)
         pyxel.flip()
         
 if __name__=="__main__":

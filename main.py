@@ -6,9 +6,6 @@ import paddle
 ####====================================
 #### CONSTANT
 
-SCREEN_HEIGHT = 256
-SCREEN_WIDTH = 256
-
 ####====================================
 #### CLASS
 
@@ -22,7 +19,8 @@ class Game:
 
     def update(self):
         if sp.collision(self.ball.sp,self.paddle.sp):
-            self.ball.sp.dy = (-1)*self.ball.sp.dy
+            if self.ball.dy > 0:
+                self.ball.sp.dy = (-1)*self.ball.sp.dy
         self.ball.update()
         self.paddle.update()
 

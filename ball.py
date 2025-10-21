@@ -15,7 +15,7 @@ BALL_SPEED = 512
 
 class Ball():
     def __init__(self):
-        self.sp = sprite.Sprite(0,128,1,0,sprite.sp8Group)
+        self.sp = sprite.Sprite(0,128,1,0,sprite.sp8Group,area=(1,1))
         self.start_ball()
         self.count = 3
 
@@ -28,6 +28,14 @@ class Ball():
     def lost_ball(self):
         self.count -= 1
         
+    def reflect(self):
+        if (self.sp.x<=0) and (self.sp.dx<0):
+            self.sp.dx = abs(self.sp.dx)
+        if (self.sp.x>=(screen.WIDTH-BALL_SIZE)) and (self.sp.dx>0):
+            self.sp.dx *= -1
+        if (self.sp.y<=0) and (self.sp.dy<0):
+            self.sp.dy = abs(self.sp.dy)
+    
     def update(self):
         self.sp.update()
 

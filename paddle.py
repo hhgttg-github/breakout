@@ -1,5 +1,6 @@
 import pyxel
 import sprite
+import screen
 
 ####====================================
 #### CONSTANT
@@ -23,7 +24,14 @@ class Paddle():
             self.sp.dx = 512
         elif (pyxel.btnr(pyxel.KEY_A)) or (pyxel.btnr(pyxel.KEY_D)):
             self.sp.dx = 0
+
         self.sp.update()
+
+        print(f"x={self.sp.x}")
+        if self.sp.x <=0:
+            self.sp.x = 0
+        if self.sp.x >= screen.WIDTH - PADDLE_WIDTH:
+            self.sp.x = screen.WIDTH - PADDLE_WIDTH
 
     def draw(self):
         self.sp.draw()

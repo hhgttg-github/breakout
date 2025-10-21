@@ -37,10 +37,10 @@ class Ball():
             self.sp.dy = abs(self.sp.dy)
     
     def reflect_horizontal(self):
-        self.dx *= -1
+        self.sp.dx *= -1
 
     def reflect_vertical(self):
-        self.dy *= -1
+        self.sp.dy *= -1
 
     def update(self):
         self.sp.update()

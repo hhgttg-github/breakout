@@ -44,12 +44,15 @@ class Bricks_Table():
     def update(self,ball):
         for brck in self.table:
             if sprite.collision(brck.sp,ball.sp):
-                if (ball.sp.dx < 0) and (ball.sp.dy < 0):
-# ちょっともう少し考えてから
-                    # if Bricks_Table.touch_top(ball,brck):
-                    #     ball.reflect_vertical()
-                    # elif Bricks_Table.touch_left(ball.brck):
-                    #     ball.reflect_horizontal()
+                overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
+                overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)
+                if overlap_x < overlap_y:
+                    ball.reflect_horizontal()
+                elif overlap_x > overlap_y:
+                    ball.reflect_vertical()
+                else:
+                    ball.reflect_horizontal()
+                    ball.reflect_vertical()
 
     def draw(self):
         for b in self.table:

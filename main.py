@@ -25,7 +25,7 @@ class Game:
         if sp.collision(self.ball.sp,self.paddle.sp):
             if self.ball.sp.dy > 0:
                 self.ball.sp.dy = (-1)*self.ball.sp.dy
-        self.ball.reflect()
+        self.ball.reflect_around()
         self.ball.update()
         self.paddle.update()
         self.bricks.update(self.ball)

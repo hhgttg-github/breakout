@@ -28,7 +28,7 @@ class Ball():
     def lost_ball(self):
         self.count -= 1
         
-    def reflect(self):
+    def reflect_around(self):
         if (self.sp.x<=0) and (self.sp.dx<0):
             self.sp.dx = abs(self.sp.dx)
         if (self.sp.x>=(screen.WIDTH-BALL_SIZE)) and (self.sp.dx>0):
@@ -36,6 +36,12 @@ class Ball():
         if (self.sp.y<=0) and (self.sp.dy<0):
             self.sp.dy = abs(self.sp.dy)
     
+    def reflect_horizontal(self):
+        self.dx *= -1
+
+    def reflect_vertical(self):
+        self.dy *= -1
+
     def update(self):
         self.sp.update()
 

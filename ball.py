@@ -8,7 +8,7 @@ import screen
 
 BALL_SP = 1
 BALL_SIZE = 8
-BALL_SPEED = 512
+BALL_SPEED = 1024
 
 ####====================================
 #### CLASS

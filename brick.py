@@ -46,13 +46,25 @@ class Bricks_Table():
             if sprite.collision(brck.sp,ball.sp):
                 overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
                 overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)
+                print(f"over_x = {overlap_x}, over_y = {overlap_y}")
                 if overlap_x < overlap_y:
+                    sprite.pushback(brck.sp,ball.sp)
                     ball.reflect_horizontal()
+                    print("horizontal")
+                    break
                 elif overlap_x > overlap_y:
+                    sprite.pushback(brck.sp,ball.sp)
                     ball.reflect_vertical()
+                    print("vertical")
+                    break
                 else:
+                    sprite.pushback(brck.sp,ball.sp)
                     ball.reflect_horizontal()
                     ball.reflect_vertical()
+                    print("horizontal and vertical")
+                    break
+
+
 
     def draw(self):
         for b in self.table:

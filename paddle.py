@@ -17,14 +17,16 @@ class Paddle():
 
     def __init__(self):
         self.sp = sprite.Sprite(120,240,32,0,sprite.sp8Group,area=(2,1))
+        self.sp.dx = PADDLE_SPEED
+        self.sp.vx = 0
 
     def update(self):
         if pyxel.btn(pyxel.KEY_A):
-            self.sp.dx = PADDLE_SPEED * (-1)
+            self.sp.vx = -1
         if pyxel.btn(pyxel.KEY_D):
-            self.sp.dx = PADDLE_SPEED
+            self.sp.vx = 1
         if (pyxel.btnr(pyxel.KEY_A)) or (pyxel.btnr(pyxel.KEY_D)):
-            self.sp.dx = 0
+            self.sp.vx = 0
 
         self.sp.update()
 

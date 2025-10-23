@@ -8,25 +8,36 @@ SP_BRICK = 34
 BRICK_WIDTH = 16
 BRICK_HEIGHT = 8
 
-BRICKS_COLUM = 12
-BRICKS_ROW = 5
+BRICKS_COLUM = 8
+BRICKS_ROW = 8
 NUM_BIRCKS = BRICKS_ROW * BRICKS_COLUM
 
 BRICKS_TOP = 32
-BRICKS_LEFT = 32
+BRICKS_LEFT = 64
+
+####------------------------------------
+#### ブロック配置用配列
+
+C_WIDTH = 32
+C_HEIGHT = 32
+C_SIZE = C_WIDTH * C_HEIGHT
 
 ####====================================
 #### CLASS
 
 class Brick():
-    def __init__(self):
+    def __init__(self,id):
+        self.id = id
         self.sp = sprite.Sprite(0,0,SP_BRICK,0,sprite.sp8Group,area=(2,1))
         self.exist = True
 
-    def __update__(self):
+    def erase(self):
+        self.exist = False
+
+    def update(self):
         pass
 
-    def __draw__(self):
+    def draw(self):
         self.sp.draw()
 
 ####====================================
@@ -43,28 +54,25 @@ class Bricks_Table():
     
     def update(self,ball):
         for brck in self.table:
-            if sprite.collision(brck.sp,ball.sp):
-                overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
-                overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)
-                print(f"over_x = {overlap_x}, over_y = {overlap_y}")
-                if overlap_x < overlap_y:
+            if brck.exist:
+                if sprite.collision(brck.sp,ball.sp):
+                    overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
+                    overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)
                     sprite.pushback(brck.sp,ball.sp)
-                    ball.reflect_horizontal()
-                    print("horizontal")
-                    break
-                elif overlap_x > overlap_y:
-                    sprite.pushback(brck.sp,ball.sp)
-                    ball.reflect_vertical()
-                    print("vertical")
-                    break
-                else:
-                    sprite.pushback(brck.sp,ball.sp)
-                    ball.reflect_horizontal()
-                    ball.reflect_vertical()
-                    print("horizontal and vertical")
-                    break
 
-
+                    if overlap_x < overlap_y:
+                        brck.erase()
+                        ball.reflect_horizontal()
+                        break
+                    elif overlap_x > overlap_y:
+                        brck.erase()
+                        ball.reflect_vertical()
+                        break
+                    else:
+                        brck.erase()
+                        ball.reflect_horizontal()
+                        ball.reflect_vertical()
+                        break
 
     def draw(self):
         for b in self.table:

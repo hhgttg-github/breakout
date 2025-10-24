@@ -1,3 +1,4 @@
+import random
 import pyxel
 import sprite
 import screen
@@ -97,28 +98,29 @@ class Bricks_Table():
         #         i += 1
     
     def update(self,ball):
-        mbr_list = []
+        brck_list = []
+        sp_list   = sprite.SpList()
         for brck in self.table:
             if brck.exist:
                 if sprite.collision(brck.sp,ball.sp):
-                    list.append((brck.sp.x,brck.sp.y,brck.sp.w,brck.sp.h))
-        if mbr_list != []:
-        mbr = sprite.mbr(mbr_list)
-        overlap_x = sprite.overlap(mbr[0],mbr[2],ball.sp.x,ball.sp.w)
-        overlap_y = sprite.overlap(mbr[1],mbr[3],ball.sp.y,ball.sp.h)
-        x_mv,y_mv = sprite.pushback_rect(mbr[0],mbr[1],mbr[2],mbr[3],ball.sp.x,ball.sp.y,ball.sp.w,ball.sp.h)
-        ball.move_xy(x_mv,y_mv) #計算後、実際の押し戻しを行う。
+                    brck_list.append(brck)
+                    sp_list.append(brck.sp)
+        if brck_list != []:
+            mbr = sp_list.mbr()
+            overlap_x = sprite.overlap(mbr[0],mbr[2],ball.sp.x,ball.sp.w)
+            overlap_y = sprite.overlap(mbr[1],mbr[3],ball.sp.y,ball.sp.h)
+            x_mv,y_mv = sprite.pushback_rect(mbr[0],mbr[1],mbr[2],mbr[3],ball.sp.x,ball.sp.y,ball.sp.w,ball.sp.h)
+            ball.sp.move_xy(x_mv,y_mv) #計算後、実際の押し戻しを行う。
         
-        for brck in mbr_list:
-            brck.erase()
-        if overlap_x < overlap_y:
-            ball.reflect_horizontal()
-        elif overlap_x > overlap_y:
-            ball.reflect_vertical()
-
-        else:
-            ball.reflect_horizontal()
-            ball.reflect_vertical()
+            erase_brck = random.choice(brck_list)
+            erase_brck.erase()
+            if overlap_x < overlap_y:
+                ball.reflect_horizontal()
+            elif overlap_x > overlap_y:
+                ball.reflect_vertical()
+            else:
+                ball.reflect_horizontal()
+                ball.reflect_vertical()
 
                     # overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
                     # overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)

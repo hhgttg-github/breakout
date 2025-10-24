@@ -102,6 +102,7 @@ class Bricks_Table():
             if brck.exist:
                 if sprite.collision(brck.sp,ball.sp):
                     list.append((brck.sp.x,brck.sp.y,brck.sp.w,brck.sp.h))
+        if mbr_list != []:
         mbr = sprite.mbr(mbr_list)
         overlap_x = sprite.overlap(mbr[0],mbr[2],ball.sp.x,ball.sp.w)
         overlap_y = sprite.overlap(mbr[1],mbr[3],ball.sp.y,ball.sp.h)

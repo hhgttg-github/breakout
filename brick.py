@@ -1,5 +1,6 @@
 import pyxel
 import sprite
+import screen
 
 ####====================================
 #### CONSTANT
@@ -8,26 +9,46 @@ SP_BRICK = 34
 BRICK_WIDTH = 16
 BRICK_HEIGHT = 8
 
-BRICKS_COLUM = 8
-BRICKS_ROW = 8
-NUM_BIRCKS = BRICKS_ROW * BRICKS_COLUM
+BRICKS_COLUM = 16
+BRICKS_ROW = 5
 
-BRICKS_TOP = 32
-BRICKS_LEFT = 64
+BRICKS_TOP = 24
 
 ####------------------------------------
 #### ブロック配置用配列
 
-C_WIDTH = 32
-C_HEIGHT = 32
-C_SIZE = C_WIDTH * C_HEIGHT
+C_WIDTH = 16
+C_HEIGHT = 5
+C_TABLE = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+           [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+           [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+           [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+           [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0],
+           [0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0]]
 
+# C_TABLE = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+#            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+#            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+#            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+#            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 ####====================================
+#### FUNCTION
+
+def to_1d(x,y):
+    return(x + y * screen.SC_WIDTH)
+
+def to_2d(i):
+    y,x = divmod(i,screen.SC_WIDTH)
+    return(x,y)
+
+####===========]=========================
 #### CLASS
 
 class Brick():
-    def __init__(self,id):
-        self.id = id
+    def __init__(self):
+        self.id = 0
         self.sp = sprite.Sprite(0,0,SP_BRICK,0,sprite.sp8Group,area=(2,1))
         self.exist = True
 
@@ -43,19 +64,47 @@ class Brick():
 ####====================================
 
 class Bricks_Table():
+
     def __init__(self):
-        self.table = [Brick() for _ in range(NUM_BIRCKS)]
+        self.num_bricks =0
+        for l in C_TABLE:
+            self.num_bricks += l.count(1)
+        self.table = [Brick() for _ in range(self.num_bricks)]
+
+        x = 0
+        y = 0
         i = 0
-        for y in range(BRICKS_ROW):
-            for x in range(BRICKS_COLUM):
-                self.table[i].sp.x = BRICKS_LEFT + x*BRICK_WIDTH
-                self.table[i].sp.y = BRICKS_TOP + y*BRICK_HEIGHT
-                i += 1
+        for l in C_TABLE:
+            for c in l:
+                print(f"x,y={x},{y}")
+                print(f"c = {c}")
+                if c == 1:
+                    self.table[i].sp.x = x * BRICK_WIDTH
+                    self.table[i].sp.y = y * BRICK_HEIGHT
+                    i += 1
+                x += 1
+            x = 0
+            y += 1
+            
+
+####        ???????????????????????/
+
+        # i = 0
+        # for y in range(BRICKS_ROW):
+        #     for x in range(BRICKS_COLUM):
+        #         self.table[i].sp.x = BRICKS_LEFT + x*BRICK_WIDTH
+        #         self.table[i].sp.y = BRICKS_TOP + y*BRICK_HEIGHT
+        #         i += 1
     
     def update(self,ball):
+        mbr_list = []
         for brck in self.table:
             if brck.exist:
                 if sprite.collision(brck.sp,ball.sp):
+                    list.append((brck.sp.x,brck.sp.y,brck.sp.w,brck.sp.h))
+        mbr = sprite.mbr(mbr_list)
+        overlap_x = sprite.overlap(mbr[0],mbr[2],ball.sp.x,ball.sp.w)
+        overlap_y = sprite.overlap(mbr[1],mbr[3],ball.sp.y,ball.sp.h)
                     overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
                     overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)
                     sprite.pushback(brck.sp,ball.sp)

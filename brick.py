@@ -105,23 +105,37 @@ class Bricks_Table():
         mbr = sprite.mbr(mbr_list)
         overlap_x = sprite.overlap(mbr[0],mbr[2],ball.sp.x,ball.sp.w)
         overlap_y = sprite.overlap(mbr[1],mbr[3],ball.sp.y,ball.sp.h)
-                    overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
-                    overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)
-                    sprite.pushback(brck.sp,ball.sp)
+        x_mv,y_mv = sprite.pushback_rect(mbr[0],mbr[1],mbr[2],mbr[3],ball.sp.x,ball.sp.y,ball.sp.w,ball.sp.h)
+        ball.move_xy(x_mv,y_mv) #計算後、実際の押し戻しを行う。
+        
+        for brck in mbr_list:
+            brck.erase()
+        if overlap_x < overlap_y:
+            ball.reflect_horizontal()
+        elif overlap_x > overlap_y:
+            ball.reflect_vertical()
 
-                    if overlap_x < overlap_y:
-                        brck.erase()
-                        ball.reflect_horizontal()
-                        break
-                    elif overlap_x > overlap_y:
-                        brck.erase()
-                        ball.reflect_vertical()
-                        break
-                    else:
-                        brck.erase()
-                        ball.reflect_horizontal()
-                        ball.reflect_vertical()
-                        break
+        else:
+            ball.reflect_horizontal()
+            ball.reflect_vertical()
+
+                    # overlap_x = sprite.overlap(brck.sp.x,brck.sp.w,ball.sp.x,ball.sp.w)
+                    # overlap_y = sprite.overlap(brck.sp.y,brck.sp.h,ball.sp.y,ball.sp.h)
+                    # sprite.pushback(brck.sp,ball.sp)
+
+                    # if overlap_x < overlap_y:
+                    #     brck.erase()
+                    #     ball.reflect_horizontal()
+                    #     break
+                    # elif overlap_x > overlap_y:
+                    #     brck.erase()
+                    #     ball.reflect_vertical()
+                    #     break
+                    # else:
+                    #     brck.erase()
+                    #     ball.reflect_horizontal()
+                    #     ball.reflect_vertical()
+                    #     break
 
     def draw(self):
         for b in self.table:

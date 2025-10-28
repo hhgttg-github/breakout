@@ -8,7 +8,7 @@ import screen
 
 BALL_SP = 1
 BALL_SIZE = 8
-BALL_SPEED = 1024
+BALL_SPEED = 128
 
 ####====================================
 #### CLASS
@@ -23,7 +23,7 @@ class Ball():
         self.sp.x = random.randint(0,screen.WIDTH)
         self.sp.y = 128
         self.sp.dx = BALL_SPEED
-        self.sp.dy = 256
+        self.sp.dy = BALL_SPEED
         self.vx = random.choice([-1,1])
         self.vy = 1
     
@@ -42,16 +42,47 @@ class Ball():
 
     def reflect_horizontal(self):
         self.sp.vx *= -1
-        self.sp.dy += random.choice([-32,64,128])
-        self.sp.dx += random.choice([-256,256])
+        self.sp.dy += random.choice([-8,8,12])
+        self.sp.dx += random.choice([-12,12])
         self.limit_speed()
 
     def reflect_vertical(self):
         self.sp.vy *= -1
-        self.sp.dx += random.choice([-32,64,128])
-        self.sp.dy += random.choice([-256,256])
+        self.sp.dx += random.choice([-8,8,12])
+        self.sp.dy += random.choice([-12,12])
         self.limit_speed()
 
+####====================================
+
+    def left_border(self):
+        if screen.left_top_border(self.sp.x):
+            return(True)
+        else:
+            return(False)
+
+    def left_border(self):
+        if screen.left_top_border(self.sp.x):
+            return(True)
+        else:
+            return(False)
+
+    def top_border(self):
+        if screen.left_top_border(self.sp.y):
+            return(True)
+        else:
+            return(False)
+
+    def right_border(self):
+        if screen.left_top_border(self.sp.x + 7):
+            return(True)
+        else:
+            return(False)
+
+    def bottom_border(self):
+        if screen.left_top_border(self.sp.y + 7):
+            return(True)
+        else:
+            return(False)
 ####====================================
 
     def limit_speed(self):

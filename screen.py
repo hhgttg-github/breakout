@@ -7,10 +7,29 @@ import pyxel
 WIDTH = 256
 HEIGHT = 256
 
-SC_WIDTH = WIDTH // 8
-SC_HEIGHT = HEIGHT // 8
-SC_SIZE = SC_WIDTH * SC_HEIGHT
-SC_TABLE = [0 for _ in range(SC_SIZE)]
+GRID_SIZE = 8
+GRID_WIDTH = WIDTH // GRID_SIZE
+GRID_HEIGHT = HEIGHT // GRID_SIZE
+GRID_AREA = GRID_WIDTH * GRID_HEIGHT
+grid_map = [-1 for _ in range(GRID_AREA)]
+
+def sc_xy_to_pyxel(x,y):
+    return(x * GRID_SIZE ,y * GRID_SIZE)
+
+def pixel_to_sc_xy(px,py):
+    return(px // GRID_SIZE,py // GRID_SIZE)
+
+def left_top_border(x):
+    if (x % GRID_SIZE) == 0:
+        return(True)
+    else:
+        return(False)
+
+def right_bottom_border(x):
+    if (x % GRID_SIZE) == GRID_SIZE - 1:
+        return(True)
+    else:
+        return(False)
 
 ####====================================
 #### FONT

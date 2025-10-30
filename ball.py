@@ -8,7 +8,29 @@ import screen
 
 BALL_SP = 1
 BALL_SIZE = 8
-BALL_SPEED = 128
+BALL_INIT_DIR = 6
+BALL_INIT_SPEED = 10 # 1-25 の範囲。 x100でmax 256
+
+### 16方向の座標・半径100の円で12時から時計回りに
+DIR16 = [(0,-10),( 4,-9),( 7,-7),( 9,-4),
+            (10, 0),( 9, 4),( 7, 7),( 4, 9),
+            (0,10),(-4, 9),(-7, 7),(-9, 4),
+            (-10,0),(-9,-4),(-7,-7),(-4,-9)]
+LINE16 = {}
+V_REFLECT = {0:[7,8,9],1:[6,7,8],2:[5,6,7],3:[4,5,6],
+             4:[5,6],5:[2,3,4],6:[1,2,3],7:[0,1,2],
+             8:[15,0,1],9:[0,15,14],10:[13,14,15],
+             11:[12,13,14],12:[11,10],13:[10,11,12],
+             14:[9,10,11],15:[8,9,10]}
+
+def init_line16():
+    """12次方向のインデックスが0, 以後、時計回りに1ずつ増加
+        LINE16[DIR16[0]] で12次方向への座標軌跡が得られる"""
+    id = 0 
+    for d in DIR16:
+        LINE16[id] = list(screen.bresenham(0,0,d[0],d[1]))
+        print(f"DIR={d}, LINE={LINE16[id]}")
+        id += 1
 
 ####====================================
 #### CLASS
@@ -16,16 +38,35 @@ BALL_SPEED = 128
 class Ball():
     def __init__(self):
         self.sp = sprite.Sprite(0,128,1,0,sprite.sp8Group,area=(1,1))
+        self.dir = BALL_INIT_DIR
+        self.speed = BALL_INIT_SPEED
         self.start_ball()
         self.count = 3
 
     def start_ball(self):
         self.sp.x = random.randint(0,screen.WIDTH)
         self.sp.y = 128
-        self.sp.dx = BALL_SPEED
-        self.sp.dy = BALL_SPEED
-        self.vx = random.choice([-1,1])
-        self.vy = 1
+        self.set_dir_speed()
+
+    def set_dir_speed(self):
+        
+        dx,dy = DIR16[self.dir]
+
+        if dx < 0:
+            self.vx = -1
+        else:
+            self.vx = 1
+        self.sp.dx = abs(dx) * self.speed
+
+        if dy < 0:
+            self.vy = -1
+        else:
+            self.vy = 1
+        self.sp.dy = abs(dy) * self.speed
+
+    def course(self):
+        l=LINE16[DIR16[self.dir]]
+        return(list(map(lambda x:(self.sp.x + x[0], self.sp.y + x[1]), l)))
     
     def lost_ball(self):
         self.count -= 1

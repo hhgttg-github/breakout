@@ -15,7 +15,6 @@ class Game:
     def __init__(self):
         pyxel.init(screen.WIDTH,screen.HEIGHT,fps=60)
         pyxel.load("breakout.pyxres")
-        ball.init_line16()
         self.ball = ball.Ball()
         self.paddle = paddle.Paddle()
         self.score = 0

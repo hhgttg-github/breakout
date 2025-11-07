@@ -36,7 +36,6 @@ class Game:
         self.paddle.draw()
         self.bricks.draw()
         screen.draw_score(self.score)
-        pyxel.flip()
         
 if __name__=="__main__":
     Game()

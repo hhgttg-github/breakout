@@ -1,7 +1,7 @@
 import random
 import pyxel
 import sprite
-import screen
+import screen as sc
 
 ####====================================
 #### CONSTANT
@@ -34,12 +34,15 @@ H_REFLECT = {0:[1,15],1:[14,15,0],2:[13,14,15],3:[12,13,14],
 class Ball():
     def __init__(self):
         self.sp = sprite.CourseSp(0,128,1,0,sprite.sp8Group,BALL_INIT_DIR,BALL_INIT_SPEED,area=(1,1))
-        self.sp.x = random.randint(0,screen.WIDTH)
+        self.sp.x = random.randint(0,sc.WIDTH)
         self.sp.y = 128
-        self.centerX = sp.x + 3
-        self.centerY = sp.y + 3
+        self.centerX = self.sp.x + 3
+        self.centerY = self.sp.y + 3
+        self.lt = (self.sp.x,self.sp.y)
+        self.rt = (self.sp.x+sc.GRID_MARGIN,self.sp.y)
+        self.lb = (self.sp.x,self.sp.y+sc.GRID_MARGIN)
+        self.rb = (self.sp.x+sc.GRID_MARGIN,self.sp.y+sc.GRID_MARGIN)
         self.count = 3
-        self.sp.set_dir()
     
     def lost_ball(self):
         self.count -= 1
@@ -48,46 +51,79 @@ class Ball():
         pass
 
     def reflect_horizontal(self):
-        self.sp.vx *= -1
-        self.sp.dy += random.choice([-8,8,12])
-        self.sp.dx += random.choice([-12,12])
+        reflect = random.choice(H_REFLECT[self.sp.dir])
+        self.sp.set_dir(reflect)
+        self.sp.speed += 100
         self.limit_speed()
 
     def reflect_vertical(self):
-        self.sp.dir = random.choice(V_REFLECT[self.sp.dir])
-        self.sp.set_dir()
+        reflect = random.choice(V_REFLECT[self.sp.dir])
+        self.sp.set_dir(reflect)
+        self.sp.speed += 100
+        self.limit_speed()
 
 ####====================================
 
-    def left_border(self):
-        if screen.left_top_border(self.sp.x):
-            return(True)
-        else:
-            return(False)
+    def check_pushback(self):
 
-    def left_border(self):
-        if screen.left_top_border(self.sp.x):
-            return(True)
-        else:
-            return(False)
+        right_top    = sc.get_tile_pxy(self.rt[0],self.rt[1])
+        right_bottom = sc.get_tile_pxy(self.rb[0],self.rb[1])
+        left_top     = sc.get_tile_pxy(self.lt[0],self.lt[1])
+        left_bottom  = sc.get_tile_pxy(self.lb[0],self.lb[1])
+        rt = (right_top    == sc.TILE_BLOCK_L) or (right_top    == sc.TILE_BLOCK_R)
+        rb = (right_bottom == sc.TILE_BLOCK_L) or (right_bottom == sc.TILE_BLOCK_R)
+        lt = (left_top     == sc.TILE_BLOCK_L) or (left_top     == sc.TILE_BLOCK_R)
+        lb = (left_bottom  == sc.TILE_BLOCK_L) or (left_bottom  == sc.TILE_BLOCK_R)
+        
+        # 3方向のうち1方向のみブロックでなければ、その方向にプッシュバック
+        if not(rt) and rb and lt and lb:
+            self.move_to_rt()
+            return()
+        elif rt and not(rb) and lt and lb:
+            self.move_to_rb()
+            return()
+        elif rt and rb and not(lt) and lb:
+            self.move_to_lt()
+            return()
+        elif rt and rb and lt and not(lb):
+            self.move_to_lb()
+            return()
+        
+        # 2方向のみブロックなら、水平か垂直にプッシュバック
+        if not(rt) and not(rb) and lt and lb:
+            self.move_to_left_edge()
+            return()
+        elif rt and rb and not(lt) and not(lb):
+            self.move_to_right_edge()
+            return()
+        elif not(rt) and rb and not(lt) and lb:
+            self.move_to_top_edge()
+            return()
+        elif rt and not(rb) and lt and not(lb):
+            self.move_to_bottom_edge()
+            return()
 
-    def top_border(self):
-        if screen.left_top_border(self.sp.y):
-            return(True)
-        else:
-            return(False)
+####====================================
 
-    def right_border(self):
-        if screen.left_top_border(self.sp.x + 7):
-            return(True)
-        else:
-            return(False)
+    def move_to_rt(self):
+        pass
+    def move_to_rb(self):
+        pass
+    def move_to_lt(self):
+        pass
+    def move_to_lb(self):
+        pass
+ 
+    def move_to_right_edge(self):
+        pass
+    def move_to_left_edge(self):
+        pass
+    def move_to_top_edge(self):
+        pass
+    def move_to_bottom_edge(self):
+        pass
+####====================================
 
-    def bottom_border(self):
-        if screen.left_top_border(self.sp.y + 7):
-            return(True)
-        else:
-            return(False)
 ####====================================
 
     def limit_speed(self):
@@ -106,7 +142,10 @@ class Ball():
         self.limit_speed()
         self.centerX = self.sp.x + 3
         self.centerY = self.sp.y + 3
-
+        self.lt = (self.sp.x,self.sp.y)
+        self.rt = (self.sp.x+sc.GRID_MARGIN,self.sp.y)
+        self.lb = (self.sp.x,self.sp.y+sc.GRID_MARGIN)
+        self.rb = (self.sp.x+sc.GRID_MARGIN,self.sp.y+sc.GRID_MARGIN)
 
     def draw(self):
         self.sp.draw()
